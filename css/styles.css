@@ -1,0 +1,957 @@
+/* Fonts */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&family=Roboto:wght@400;500&display=swap");
+
+/* Defaults */
+#embed-app {
+  font-family: "Roboto", sans-serif;
+  line-height: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Fallback for Safari */
+.player__main button:focus,
+.player__main a:focus,
+.player-panels a:focus,
+.player-panel .player-panel-row input:focus,
+.player-panels button:focus {
+  box-shadow: 0 0 0 4px rgba(236, 45, 108, 0.6);
+  opacity: 1;
+  outline: 0;
+  border: none;
+  border-radius: 4px;
+}
+
+.player .play-btn:focus,
+.player .pause-btn:focus {
+  border-radius: 50%;
+}
+
+@supports selector(:focus-visible) {
+  /* Override focus styles for browsers that support focus visible */
+  .player__main button:focus,
+  .player__main a:focus,
+  .player-panels a:focus,
+  .player-panel .player-panel-row input:focus,
+  .player-panels button:focus {
+    box-shadow: none;
+    opacity: 1;
+  }
+  /* Only add focus styles for keyboard users */
+  .player__main button:focus-visible,
+  .player__main a:focus-visible,
+  .player-panels a:focus-visible,
+  .player-panel .player-panel-row input:focus-visible,
+  .player-panels button:focus-visible {
+    box-shadow: 0 0 0 4px rgba(236, 45, 108, 0.6);
+    opacity: 1;
+    outline: 0;
+    border: none;
+    border-radius: 4px;
+  }
+
+  .player .play-btn:focus-visible, 
+  .player .pause-btn:focus-visible {
+    border-radius: 50%;
+  }
+}
+
+body {
+  margin: 0;
+}
+
+/* Player */
+.player {
+  width: 100%;
+  height: 150px;
+  background: linear-gradient(359.68deg, #0f172a 1.03%, #1e293b 77.9%);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.inactive-player {
+  width: 100%;
+  height: 150px;
+  background: linear-gradient(161.05deg, #F8FAFC 9.2%, #EFF7FF 32.7%, #EFE9FE 88.08%);
+  border-radius: 4px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+.inactive-player--blob {
+  position: relative;
+  width: 145px;
+}
+
+.inactive-player--blob svg {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  border-radius: 4px;
+}
+
+.inactive-player--blob :first-child {
+  z-index: 2;
+}
+
+.inactive-player--text {
+  padding: 1rem;
+}
+
+.inactive-player--text h1, .inactive-player--text p {
+  /* Reset margin */
+  margin: 0;
+}
+
+.inactive-player--text p {
+  margin-top: 8px;
+  font-size: 15px;
+  color: #64748B;
+}
+
+.inactive-player--text h1 {
+  font-weight: 700;
+  font-size: 22px;
+  color: #334155;
+}
+
+.inactive-player--text a {
+  width: fit-content;
+  font-size: 14px;
+  color: white;
+  display: flex;
+  align-items: center;
+  background-color: #1E293B;
+  border-radius: 6px;
+  padding: 6px 8px;
+  text-decoration: none;
+  gap: 5px;
+  margin-top: 10px;
+}
+
+.player__main {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  grid-gap: 15px;
+  position: relative;
+}
+/* To hide player body when one of the interactive panels is clicked */
+.inactive {
+  display: none !important;
+}
+
+.player__artwork {
+  line-height: 0;
+  z-index: 0;
+}
+.player__artwork:hover {
+  cursor: pointer;
+}
+.player__artwork img {
+  height: 150px;
+  width: 150px;
+}
+.player__body {
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  padding: 13px 13px 10px 0;
+}
+.powered-by {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  background-position: top left;
+  background-repeat: no-repeat;
+  opacity: 0.4;
+  background: url("../fonts/castos-logo-light.svg");
+}
+
+.powered-by:focus-within {
+  opacity: 0.8;
+}
+
+.powered-by a {
+  width: 59px;
+  display: block;
+  height: 20px;
+}
+
+/* Panels */
+.player-panels .player-panel {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  top: 12px;
+  bottom: 0%;
+  background: #2c3544;
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.05);
+  border-radius: 3px 3px 0px 0px;
+  z-index: 3;
+  transform: translateY(110%);
+  transition: all 250ms ease-in-out;
+}
+.player-panels .player-panel.open {
+  transform: translateY(0);
+  visibility: visible;
+}
+.close-btn {
+  z-index: 3;
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  background-color: #fff;
+  border-radius: 50% !important;
+  display: inline-block;
+  border: none;
+  width: 21px;
+  height: 21px;
+}
+.close-btn span {
+  display: inline-block;
+  width: 13px;
+  height: 2px;
+  background-color: #ec2d76;
+  position: absolute;
+  left: 4px;
+  transition: all 100ms ease-in-out;
+}
+.close-btn span:nth-child(1) {
+  transform: rotate(45deg);
+}
+.close-btn span:nth-child(2) {
+  transform: rotate(-45deg);
+}
+.close-btn:hover {
+  cursor: pointer;
+}
+.close-btn:hover span:nth-child(1) {
+  transform: rotate(135deg);
+}
+.close-btn:hover span:nth-child(2) {
+  transform: rotate(45deg);
+}
+
+.player-panel {
+  padding: 12px 7px 10px 15px;
+  visibility: hidden;
+}
+.player-panel h3 {
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  color: #fff;
+  margin: 0 0 5px 0;
+}
+.player-panel .player-panel-row {
+  display: grid;
+  grid-template-columns: 70px 1fr 30px;
+  margin-bottom: 10px;
+  align-items: center;
+}
+.player-panel .player-panel-row .title {
+  color: #fff;
+  text-transform: uppercase;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+}
+.player-panel .player-panel-row button {
+  justify-self: flex-end;
+  padding: 16px 13px 15px 14px;
+  border-radius: 50%;
+  transition: all 200ms ease-in-out;
+  display: block;
+  background-image: url("../fonts/icon-copy.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
+}
+.player-panel .player-panel-row button:hover {
+  cursor: pointer;
+  background-color: #ec2d76 !important;
+}
+.icons-holder {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+}
+.share-icon {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+  border-radius: 50% !important;
+  transition: all 200ms ease-in-out;
+  background-color: #222c3b;
+}
+.share-icon span {
+  mask-repeat: no-repeat;
+  mask-position: center center;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center center;
+  width: 14px;
+  height: 15px;
+  background-color: #fff;
+}
+.share-icon.facebook span {
+  mask-image: url("../fonts/icon-brand-facebook.svg");
+  -webkit-mask-image: url("../fonts/icon-brand-facebook.svg");
+}
+.share-icon.twitter span {
+  mask-image: url("../fonts/icon-brand-twitter.svg");
+  -webkit-mask-image: url("../fonts/icon-brand-twitter.svg");
+}
+.share-icon.download span {
+  mask-image: url("../fonts/icon-download.svg");
+  -webkit-mask-image: url("../fonts/icon-download.svg");
+}
+
+#embed-app .share-icon:hover {
+  background-color: #ec2d76 !important;
+}
+.player-panel .player-panel-row input {
+  border: none;
+  padding: 7px;
+  margin: 0;
+  color: #d4c9c9;
+  background-color: #222c3b;
+  font-size: 14px;
+  width: calc(100% - 14px);
+  border-radius: 2px;
+  text-overflow: ellipsis;
+}
+.subscribe-icons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 10px 15px;
+  align-items: center;
+  justify-content: start;
+  margin: 5px 0 15px 0;
+}
+.subscribe-icons a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 11px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  grid-gap: 5px;
+  opacity: 0.8;
+  margin: 0;
+  float: none;
+}
+.subscribe-icons a:hover {
+  opacity: 1;
+  cursor: pointer;
+  color: #fff;
+}
+
+.subscribe-icons a:focus {
+  opacity: 1;
+  color: #fff;
+}
+
+.subscribe-icons span {
+  mask-repeat: no-repeat;
+  mask-position: left center;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: left center;
+  width: 20px;
+  height: 20px;
+  background-color: #fff;
+}
+.subscribe-icons .apple-podcasts span {
+  mask-image: url("../fonts/icon-brand-apple-podcasts.svg");
+  -webkit-mask-image: url("../fonts/icon-brand-apple-podcasts.svg");
+}
+.subscribe-icons .sticher span {
+  mask-image: url("../fonts/icon-brand-sticher.svg");
+  -webkit-mask-image: url("../fonts/icon-brand-sticher.svg");
+}
+.subscribe-icons .overcast span {
+  mask-image: url("../fonts/icon-brand-overcast.svg");
+  -webkit-mask-image: url("../fonts/icon-brand-overcast.svg");
+}
+.subscribe-icons .pocketcasts span {
+  mask-image: url("../fonts/icon-brand-pocketcasts.svg");
+  -webkit-mask-image: url("../fonts/icon-brand-pocketcasts.svg");
+}
+.subscribe-icons .google-podcasts span {
+  mask-image: url("../fonts/icon-google-podcasts.svg");
+  -webkit-mask-image: url("../fonts/icon-google-podcasts.svg");
+}
+.subscribe-icons .spotify span {
+  mask-image: url("../fonts/icon-brand-spotify.svg");
+  -webkit-mask-image: url("../fonts/icon-brand-spotify.svg");
+}
+.subscribe-icons .castro span {
+  mask-image: url("../fonts/icon-brand-castro.svg");
+  -webkit-mask-image: url("../fonts/icon-brand-castro.svg");
+}
+.subscribe-icons .amazon-music span {
+  mask-image: url("../fonts/icon-brand-amazon.svg");
+  -webkit-mask-image: url("../fonts/icon-brand-amazon.svg");
+}
+.subscribe-icons .goodpods span {
+  mask-image: url("../fonts/icon-brand-goodpods.svg");
+  -webkit-mask-image: url("../fonts/icon-brand-goodpods.svg");
+}
+
+/* Currently Playing */
+.currently-playing {
+  overflow: hidden;
+  width: 100%;
+}
+.currently-playing .show {
+  color: #fff;
+  opacity: 0.6;
+  font-size: 14px;
+  line-height: 1.1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.currently-playing .show strong {
+  padding-right: 2px;
+}
+.currently-playing .show span {
+  padding-left: 3px;
+  white-space: nowrap;
+}
+.episode-title {
+  color: #fff;
+  font-family: "Poppins", sans-serif;
+  font-size: 16px;
+  margin: 7px 0 4px 0;
+  line-height: 1.2;
+  height: 25px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 100%;
+}
+.play-progress {
+  display: grid;
+  grid-template-columns: 45px 1fr;
+  grid-gap: 15px;
+}
+.play-pause-controls {
+  background: #fff;
+  position: relative;
+  width: 44px;
+  height: 44px;
+  display: block;
+  border-radius: 50%;
+}
+.play-pause-controls button {
+  position: absolute;
+}
+.play-pause-controls .play-btn {
+  background: url("../fonts/icon-play.svg");
+  background-repeat: no-repeat;
+  background-position: 14px 11px;
+  border: none;
+  padding: 22px;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+}
+.play-pause-controls .play-btn:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+}
+.play-pause-controls .pause-btn {
+  background: url("../fonts/icon-pause.svg");
+  background-repeat: no-repeat;
+  background-position: 13px 13px;
+  border: none;
+  padding: 22px;
+  z-index: 2;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+}
+.play-pause-controls .pause-btn:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+}
+.play-pause-controls .hide {
+  display: none;
+}
+.play-pause-controls .loader {
+  padding: 4px 3px 4px 3px;
+  animation-name: spin;
+  animation-duration: 3000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  z-index: 1;
+  color: #ec2d76;
+}
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.progress {
+  flex: 10;
+  position: relative;
+  display: flex;
+  flex-basis: 100%;
+  width: 100%;
+  height: 8px;
+  border-radius: 10px;
+  margin: 4px 0;
+  cursor: ew-resize;
+  background-color: #334155;
+}
+.progress__filled {
+  width: 0;
+  flex: 0;
+  flex-basis: 0;
+  border-radius: 10px;
+  background-color: #ec2d76;
+}
+
+.play-pause-controls .icon {
+  position: absolute;
+  top: 15px;
+}
+
+/* Audio Player */
+.playback {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  justify-items: flex-start;
+  padding: 5px 0;
+}
+.playback__controls {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  justify-content: center;
+  align-items: center;
+  grid-gap: 10px;
+}
+.playback__timers {
+  color: #fff;
+  opacity: 0.4;
+  font-size: 12px;
+  letter-spacing: normal;
+  transition: all 200ms ease-in-out;
+}
+.playback__timers span {
+  opacity: 0.6;
+}
+.playback__controls button {
+  border: none;
+  background: transparent;
+  opacity: 0.4;
+  transition: all 200ms ease-in-out;
+  padding: 0;
+}
+.player:hover .playback__controls button,
+.player:hover .playback__timers,
+.player:hover .player-panels-nav button {
+  opacity: 0.65;
+}
+.player:focus-within .playback__controls button,
+.player:focus-within .playback__timers,
+.player:focus-within .player-panels-nav button {
+  opacity: 1;
+}
+.player:hover .playback__controls button:hover {
+  opacity: 1;
+  cursor: pointer;
+}
+.player-btn__volume span,
+.player-btn__rwd,
+.player-btn__fwd {
+  mask-repeat: no-repeat;
+  mask-position: left center;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: left center;
+}
+.player-btn__volume span {
+  display: block;
+  mask-image: url("../fonts/icon-volume-on.svg");
+  -webkit-mask-image: url("../fonts/icon-volume-on.svg");
+  border: none;
+  width: 20px;
+  height: 18px;
+}
+.player-btn__volume.off span {
+  mask-image: url("../fonts/icon-volume-off.svg");
+  -webkit-mask-image: url("../fonts/icon-volume-off.svg");
+  border: none;
+  width: 20px;
+  height: 18px;
+  background-color: #ec2d76 !important;
+}
+.player-btn__rwd span {
+  display: block;
+  mask-image: url("../fonts/icon-rwd.svg");
+  -webkit-mask-image: url("../fonts/icon-rwd.svg");
+  border: none;
+  width: 20px;
+  height: 20px;
+
+}
+.player-btn__fwd span {
+  display: block;
+  mask-image: url("../fonts/icon-fwd.svg");
+  -webkit-mask-image: url("../fonts/icon-fwd.svg");
+  border: none;
+  width: 20px;
+  height: 20px;
+}
+.player-btn__speed {
+  font-size: 12px;
+  border-radius: 4px;
+  background: none;
+  padding: 1px 4px;
+  width: 32px;
+  text-align: center;
+  color: #fff;
+  border: 1px solid #fff;
+}
+.player-panels-nav {
+  margin-left: 52px;
+  align-self: flex-end;
+  line-height: normal;
+}
+.player-panels-nav button {
+  border: none;
+  padding: 3px 10px;
+  font-size: 12px;
+  font-family: "Poppins", sans-serif;
+  border-radius: 4px;
+  text-transform: uppercase;
+  opacity: 0.4;
+  transition: all 200ms ease-in-out;
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0);
+}
+.player:hover .player-panels-nav button:hover {
+  opacity: 1;
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.episode-details {
+  display: none;
+}
+
+/* ///////////////////////////////////////////////////////////////////////// */
+/* LIGHT MODE */
+/* ///////////////////////////////////////////////////////////////////////// */
+#embed-app.light-mode .player {
+  background: linear-gradient(359.68deg, #cbd6e1 1.03%, #e2e8f0 77.9%);
+}
+#embed-app.light-mode .powered-by {
+  background: url("../fonts/castos-logo-dark.svg");
+}
+#embed-app.light-mode .player-panels .player-panel {
+  background: #fff;
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.05);
+}
+#embed-app.light-mode .close-btn {
+  background-color: #222c3b;
+}
+#embed-app.light-mode .close-btn span {
+  background-color: #fff;
+}
+#embed-app.light-mode .episode-title,
+#embed-app.light-mode .currently-playing .show,
+#embed-app.light-mode .subscribe-icons a,
+#embed-app.light-mode .player-panel h3,
+#embed-app.light-mode .player-panel .player-panel-row .title,
+#embed-app.light-mode .playback__timers {
+  color: #334155;
+}
+#embed-app.light-mode .share-icon,
+#embed-app.light-mode .player-panel .player-panel-row input {
+  background-color: #f1f1f1;
+}
+#embed-app.light-mode .player-panel .player-panel-row input {
+  color: #475569;
+}
+#embed-app.light-mode .player-panels-nav button {
+  color: #2c3544;
+  background-color: rgba(0, 0, 0, 0);
+}
+#embed-app.light-mode .player:hover .player-panels-nav button:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+#embed-app.light-mode .player-btn__speed {
+  color: #334155;
+  border: 1px solid #334155;
+}
+#embed-app.light-mode .progress {
+  background-color: #c1cdd9;
+}
+#embed-app.light-mode .player-panel .player-panel-row button {
+  background-color: #475569;
+}
+#embed-app.light-mode .subscribe-icons span,
+#embed-app.light-mode .share-icon span,
+#embed-app.light-mode .player-btn__volume span,
+#embed-app.light-mode .player-btn__rwd span,
+#embed-app.light-mode .player-btn__fwd span {
+  background-color: #334155;
+}
+
+/* ///////////////////////////////////////////////////////////////////////// */
+/* AUTO DETECT LIGHT MODE */
+/* ///////////////////////////////////////////////////////////////////////// */
+@media (prefers-color-scheme: light) {
+  #embed-app .player {
+    background: linear-gradient(359.68deg, #cbd6e1 1.03%, #e2e8f0 77.9%);
+  }
+  #embed-app .powered-by {
+    background: url("../fonts/castos-logo-dark.svg");
+  }
+  #embed-app .player-panels .player-panel {
+    background: #fff;
+    box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.05);
+  }
+  #embed-app .close-btn {
+    background-color: #222c3b;
+  }
+  #embed-app .close-btn span {
+    background-color: #fff;
+  }
+  #embed-app .episode-title,
+  #embed-app .currently-playing .show,
+  #embed-app .subscribe-icons a,
+  #embed-app .player-panel h3,
+  #embed-app .player-panel .player-panel-row .title,
+  #embed-app .playback__timers {
+    color: #334155;
+  }
+  #embed-app .share-icon,
+  #embed-app .player-panel .player-panel-row input {
+    background-color: #f1f1f1;
+  }
+  #embed-app .player-panel .player-panel-row input {
+    color: #475569;
+  }
+  #embed-app .player-panels-nav button {
+    color: #2c3544;
+    background-color: rgba(0, 0, 0, 0);
+  }
+  #embed-app .player:hover .player-panels-nav button:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+  #embed-app .player-btn__speed {
+    color: #334155;
+    border: 1px solid #334155;
+  }
+  #embed-app .progress {
+    background-color: #c1cdd9;
+  }
+  #embed-app .player-panel .player-panel-row button {
+    background-color: #475569;
+  }
+  #embed-app .subscribe-icons span,
+  #embed-app .share-icon span,
+  #embed-app .player-btn__volume span,
+  #embed-app .player-btn__rwd span,
+  #embed-app .player-btn__fwd span {
+    background-color: #334155;
+  }
+}
+
+/* ///////////////////////////////////////////////////////////////////////// */
+/* DARK MODE */
+/* ///////////////////////////////////////////////////////////////////////// */
+#embed-app.dark-mode .player {
+  background: linear-gradient(359.68deg, #0f172a 1.03%, #1e293b 77.9%);
+}
+#embed-app.dark-mode .powered-by {
+  background: url("../fonts/castos-logo-light.svg");
+}
+#embed-app.dark-mode .player-panels .player-panel {
+  background: #2c3544;
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.05);
+}
+#embed-app.dark-mode .close-btn {
+  background-color: #fff;
+}
+#embed-app.dark-mode .close-btn span {
+  background-color: #ec2d76;
+}
+#embed-app.dark-mode .episode-title,
+#embed-app.dark-mode .currently-playing .show,
+#embed-app.dark-mode .subscribe-icons a,
+#embed-app.dark-mode .player-panel h3,
+#embed-app.dark-mode .player-panel .player-panel-row .title,
+#embed-app.dark-mode .playback__timers {
+  color: #fff;
+}
+#embed-app.dark-mode .share-icon,
+#embed-app.dark-mode .player-panel .player-panel-row input {
+  color: #d4c9c9;
+  background-color: #222c3b;
+}
+#embed-app.dark-mode .player-panels-nav button {
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0);
+}
+#embed-app.dark-mode .player:hover .player-panels-nav button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+#embed-app.dark-mode .player-btn__speed {
+  color: #fff;
+  border: 1px solid #fff;
+}
+#embed-app.dark-mode .progress {
+  background-color: #334155;
+}
+#embed-app.dark-mode .player-panel .player-panel-row button {
+  background-color: #475569;
+}
+#embed-app.dark-mode .subscribe-icons span,
+#embed-app.dark-mode .share-icon span {
+  background-color: #fff;
+}
+#embed-app.dark-mode .subscribe-icons span,
+#embed-app.dark-mode .share-icon span,
+#embed-app.dark-mode .player-btn__volume span,
+#embed-app.dark-mode .player-btn__rwd span,
+#embed-app.dark-mode .player-btn__fwd span {
+  background-color: #fff;
+}
+
+/* ///////////////////////////////////////////////////////////////////////// */
+/* RWD */
+/* ///////////////////////////////////////////////////////////////////////// */
+@media (max-width: 768px) {
+  .player__main {
+    grid-template-columns: 60px 1fr;
+    grid-gap: 0;
+    height: 150px;
+  }
+
+  .inactive-player--blob {
+    display: none;
+  }
+
+  .inactive-player--text p {
+    font-size: 14px;
+  }
+  
+  .inactive-player--text h1 {
+    font-size: 18px;
+  }
+
+  .player__artwork img {
+    width: 45px;
+    height: 45px;
+    margin: 12px;
+    border-radius: 4px;
+  }
+  .player__body {
+    padding: 12px 12px 4px 12px;
+  }
+  .player-panels .player-panel {
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    border-radius: 0;
+  }
+  .player-panel .row input {
+    font-size: 16px;
+  }
+  .play-progress {
+    grid-gap: 18px;
+    margin-left: -60px;
+    margin-top: 4px;
+  }
+  .play-pause-controls {
+    width: 45px;
+    height: 45px;
+  }
+  .playback {
+    align-items: center;
+    padding: 5px 0 0 0;
+  }
+  .panel__inner {
+    height: 140px;
+    overflow-y: scroll;
+  }
+  .close-btn {
+    top: 0;
+    right: 0;
+    width: 26px;
+    height: 26px;
+    border-radius: 0 0 0 4px;
+  }
+  .close-btn span {
+    width: 16px;
+    height: 3px;
+    left: 5px;
+    top: 11px;
+  }
+  .player-panels-nav button {
+    padding: 5px 10px;
+  }
+  .powered-by {
+    bottom: 5px;
+    left: 8px;
+    right: auto;
+  }
+  .player-btn__volume {
+    display: none;
+  }
+  .player-btn__rwd {
+    width: 22px;
+    height: 22px;
+    mask-size: cover;
+    -webkit-mask-size: cover;
+  }
+  .player-btn__speed {
+    width: 35px;
+    padding: 3px 4px;
+    mask-size: cover;
+    -webkit-mask-size: cover;
+    border-width: 1px;
+  }
+  .player-btn__fwd {
+    width: 22px;
+    height: 22px;
+    mask-size: cover;
+    -webkit-mask-size: cover;
+  }
+  .playback .playback__controls {
+    grid-template-columns: repeat(3, auto);
+    grid-gap: 15px;
+    justify-content: flex-start;
+  }
+  .player-panels-nav {
+    margin: 3px -8px 0 0;
+    justify-self: flex-end;
+  }
+  .subscribe-icons {
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
+    margin: 5px 0 8px 0;
+  }
+  .playback__timers {
+    margin-right: 2px;
+  }
+  .episode-title {
+    width: calc(100vw - 100px);
+  }
+  .show {
+    width: calc(100vw - 100px);
+  }
+}
