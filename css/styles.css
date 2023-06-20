@@ -1,5 +1,9 @@
 /* Fonts */
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&family=Roboto:wght@400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?
+
+family=Poppins:wght@400;500&family=Roboto:wght@400;500&display=swap"
+
+);
 
 /* Defaults */
 #embed-app {
@@ -72,7 +76,9 @@ body {
 .inactive-player {
   width: 100%;
   height: 150px;
-  background: linear-gradient(161.05deg, #F8FAFC 9.2%, #EFF7FF 32.7%, #EFE9FE 88.08%);
+  background: linear-gradient(161.05deg, #F8FAFC 9.2%, #EFF7FF 32.7%, 
+
+#EFE9FE 88.08%);
   border-radius: 4px;
   overflow: hidden;
   display: flex;
@@ -491,6 +497,8 @@ body {
   animation-timing-function: linear;
   z-index: 1;
   color: #ec2d76;
+  width: 45px;
+  height: 45px;
 }
 @keyframes spin {
   from {
